@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block section %}
+
+<section class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-center text-primary mb-4">🎂 New Registration</h3>
+          <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <!-- <input type="text" name="name" class="form-control" required> -->
+               {{ form.first_name }}
+               {% if form.first_name.errors %}
+               <p class="small " style="color: red;">{{ form.first_name.errors.0 }}</p>
+               {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <!-- <textarea name="description" rows="3" class="form-control" required></textarea> -->
+               {{ form.email }}
+               {% if form.email.errors %}
+               <p class="small " style="color: red;">{{ form.email.errors.0 }}</p>
+               {% endif %}
+            </div>
+
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary px-4">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
