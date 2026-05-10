@@ -154,3 +154,40 @@ class Cake(BaseClass):
     def __str__(self):
 
         return self.name     
+    
+
+class Wishlist(BaseClass):
+
+    user = models.OneToOneField('authentication.Profile',on_delete=models.CASCADE)
+
+    cakes = models.ManyToManyField('cake',null=True)    
+
+    
+    class Meta:
+
+        verbose_name = 'Wishlists'
+
+        verbose_name_plural = 'Wishlists' 
+
+
+    def __str__(self):
+
+        return f'{self.user.username} Wishlist' 
+    
+class Cart(BaseClass):
+
+    user = models.OneToOneField('authentication.Profile',on_delete=models.CASCADE)
+
+    cakes = models.ManyToManyField('cake',blank=True)    
+
+    
+    class Meta:
+
+        verbose_name = 'Carts'
+
+        verbose_name_plural = 'Carts' 
+
+
+    def __str__(self):
+
+        return f'{self.user.username} Cart' 

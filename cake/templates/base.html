@@ -100,7 +100,9 @@
     <div class="preloader">
     </div>
   </div>
+ {% allowed_roles request "['User']" as allowed %}
 
+ {% if allowed %}
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
     <div class="offcanvas-header justify-content-center">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -108,34 +110,23 @@
     <div class="offcanvas-body">
       <div class="order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
+          {%no_items_in_cart request as cart_num %}
           <span class="text-primary">Your cart</span>
-          <span class="badge bg-primary rounded-circle pt-2">3</span>
+          <span class="badge bg-primary rounded-circle pt-2">{{cart_num}}</span>
         </h4>
         <ul class="list-group mb-3">
+          {% for cake in request.user.cart.cakes.all %}
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Grey Hoodie</h6>
-              <small class="text-body-secondary">Brief description</small>
+              <h6 class="my-0">{{cake.name}}</h6>
+              <small class="text-body-secondary">{{cake.weight}}</small>
             </div>
-            <span class="text-body-secondary">$12</span>
+            <span class="text-body-secondary">{{ cake.price }}</span>
           </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Dog Food</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Soft Toy</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$5</span>
-          </li>
+          {% endfor %}
           <li class="list-group-item d-flex justify-content-between">
             <span class="fw-bold">Total (USD)</span>
-            <strong>$20</strong>
+            <strong>₹20</strong>
           </li>
         </ul>
 
@@ -143,7 +134,7 @@
       </div>
     </div>
   </div>
-
+{% endif %}
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch"
     aria-labelledby="Search">
     <div class="offcanvas-header justify-content-center">
@@ -194,7 +185,8 @@
           class="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
           <div class="support-box text-end d-none d-xl-block">
             <span class="fs-6 secondary-font text-muted">Phone</span>
-            <h5 class="mb-0">+980-34984089</h5>
+            <!-- {% get_square 5 as square %} -->
+            <h5 class="mb-0"></h5>
           </div>
           <div class="support-box text-end d-none d-xl-block">
             <span class="fs-6 secondary-font text-muted">Email</span>
@@ -283,9 +275,13 @@
                   
                 </ul>
               </li>
+              {% allowed_roles request "['Admin']" as allowed %}
+
+              {% if allowed %}
               <li class="nav-item">
                 <a href="{% url 'add-cake' %}" class="nav-link">Add a Cake</a>
               </li>
+              {% endif %}
               <li class="nav-item">
                 <a href="index.html" class="nav-link">Blog</a>
               </li>
@@ -313,18 +309,25 @@
                   {% endif %}
                 </ul>
                 </li>
+            {% allowed_roles request "['User']" as allowed %}
+
+              {% if allowed %}
+
                 <li>
-                  <a href="index.html" class="mx-3">
+                  <a href="{% url 'wishlist' %}" class="mx-3">
                     <iconify-icon icon="mdi:heart" class="fs-4"></iconify-icon>
                   </a>
                 </li>
+                
+                {% endif %}
 
                 <li class="">
                   <a href="index.html" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
                     aria-controls="offcanvasCart">
                     <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
+                    {% no_items_in_cart request as cart_num %}
                     <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
-                      03
+                    {{ cart_num }}
                     </span>
                   </a>
                 </li>

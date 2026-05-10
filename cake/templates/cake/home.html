@@ -17,7 +17,7 @@
               <div class="content-wrapper col-md-7 p-5 mb-5">
                 <div class="secondary-font text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
-                    pets</span>
+                    Cakes</span>
                 </h2>
                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
@@ -36,7 +36,7 @@
               <div class="content-wrapper col-md-7 p-5 mb-5">
                 <div class="secondary-font text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
-                    pets</span>
+                    Cakes</span>
                 </h2>
                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
@@ -55,7 +55,7 @@
               <div class="content-wrapper col-md-7 p-5 mb-5">
                 <div class="secondary-font text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                 <h2 class="banner-title display-1 fw-normal">Best destination for <span class="text-primary">your
-                    pets</span>
+                    Cakes</span>
                 </h2>
                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                   shop now
@@ -152,11 +152,20 @@
                   <h3 class="secondary-font text-primary">₹{{ cake.price }}</h3>
 
                   <div class="d-flex flex-wrap mt-3">
-                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                      <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    {% cake_in_cart request cake.uuid as cart_present %}
+                    {% if cart_present %}
+                     <a class="btn-cart me-3 px-4 pt-3 pb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                    aria-controls="offcanvasCart">
+                    <h5 class="text-uppercase m-0">View Cart</h5>
                     </a>
-                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                    {% else %}
+                    <a href="{% url 'add-cart' cake.uuid %}" class="btn-cart me-3 px-4 pt-3 pb-3">
+                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    </a>
+                    {% endif %}
+                    {% cake_in_wishlist request cake.uuid as present%}
+                    <a href="{% if present %}{% url 'remove-wishlist' cake.uuid %} {% else %} {% url 'add-wishlist' cake.uuid %} {% endif %}" class="btn-wishlist px-4 pt-3 ">
+                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5 {% if present %} text-primary {% endif %}" ></iconify-icon>
                     </a>
                   </div>
 
@@ -217,11 +226,20 @@
                   <h3 class="secondary-font text-primary">₹{{ cake.price }}</h3>
 
                   <div class="d-flex flex-wrap mt-3">
-                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                      <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    {% cake_in_cart request cake.uuid as cart_present %}
+                    {% if cart_present %}
+                     <a class="btn-cart me-3 px-4 pt-3 pb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                    aria-controls="offcanvasCart">
+                    <h5 class="text-uppercase m-0">View Cart</h5>
                     </a>
-                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                    {% else %}
+                    <a href="{% url 'add-cart' cake.uuid %}" class="btn-cart me-3 px-4 pt-3 pb-3">
+                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    </a>
+                    {% endif %}
+                    {% cake_in_wishlist request cake.uuid as present%}
+                    <a href="{% if present %}{% url 'remove-wishlist' cake.uuid %} {% else %} {% url 'add-wishlist' cake.uuid %} {% endif %}" class="btn-wishlist px-4 pt-3 ">
+                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5 {% if present %} text-primary {% endif %}"></iconify-icon>
                     </a>
                   </div>
 
@@ -279,11 +297,20 @@
                   <h3 class="secondary-font text-primary">₹{{ cake.price }}</h3>
 
                   <div class="d-flex flex-wrap mt-3">
-                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                      <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    {% cake_in_cart request cake.uuid as cart_present %}
+                    {% if cart_present %}
+                     <a class="btn-cart me-3 px-4 pt-3 pb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                    aria-controls="offcanvasCart">
+                    <h5 class="text-uppercase m-0">View Cart</h5>
                     </a>
-                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                    {% else %}
+                    <a href="{% url 'add-cart' cake.uuid %}" class="btn-cart me-3 px-4 pt-3 pb-3">
+                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    </a>
+                    {% endif %}
+                    {% cake_in_wishlist request cake.uuid as present%}
+                    <a href="{% if present %}{% url 'remove-wishlist' cake.uuid %} {% else %} {% url 'add-wishlist' cake.uuid %} {% endif %}" class="btn-wishlist px-4 pt-3 ">
+                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5 {% if present %} text-primary {% endif %}"></iconify-icon>
                     </a>
                   </div>
 
@@ -341,10 +368,19 @@
                   <h3 class="secondary-font text-primary">₹{{ cake.price }}</h3>
 
                   <div class="d-flex flex-wrap mt-3">
-                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                      <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    {% cake_in_cart request cake.uuid as cart_present %}
+                    {% if cart_present %}
+                     <a class="btn-cart me-3 px-4 pt-3 pb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                    aria-controls="offcanvasCart">
+                    <h5 class="text-uppercase m-0">View Cart</h5>
                     </a>
-                    <a href="#" class="btn-wishlist px-4 pt-3 ">
+                    {% else %}
+                    <a href="{% url 'add-cart' cake.uuid %}" class="btn-cart me-3 px-4 pt-3 pb-3">
+                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    </a>
+                    {% endif %}
+                    {% cake_in_wishlist request cake.uuid as present%}
+                    <a href="{% if present %}{% url 'remove-wishlist' cake.uuid %} {% else %} {% url 'add-wishlist' cake.uuid %} {% endif %}" class="btn-wishlist px-4 pt-3 ">
                       <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
                     </a>
                   </div>
@@ -403,11 +439,20 @@
                   <h3 class="secondary-font text-primary">₹{{ cake.price }}</h3>
 
                   <div class="d-flex flex-wrap mt-3">
-                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                      <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    {% cake_in_cart request cake.uuid as cart_present %}
+                    {% if cart_present %}
+                     <a class="btn-cart me-3 px-4 pt-3 pb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                    aria-controls="offcanvasCart">
+                    <h5 class="text-uppercase m-0">View Cart</h5>
                     </a>
-                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                    {% else %}
+                    <a href="{% url 'add-cart' cake.uuid %}" class="btn-cart me-3 px-4 pt-3 pb-3">
+                    <h5 class="text-uppercase m-0">Add to Cart</h5>
+                    </a>
+                    {% endif %}
+                    {% cake_in_wishlist request cake.uuid as present%}
+                    <a href="{% if present %}{% url 'remove-wishlist' cake.uuid %} {% else %} {% url 'add-wishlist' cake.uuid %} {% endif %}" class="btn-wishlist px-4 pt-3 ">
+                      <iconify-icon icon="fluent:heart-28-filled" class="fs-5 {% if present %} text-primary {% endif %}"></iconify-icon>
                     </a>
                   </div>
 

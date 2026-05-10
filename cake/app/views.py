@@ -7,17 +7,30 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 
-from .models import Cake
+from .models import Cake,Wishlist,Cart
 
 from .forms import CakeForm
 
 from django.db.models import Q
+
+from django.contrib.auth.decorators import login_required
+
+from django.utils.decorators import method_decorator
+
+from authentication.custom_permissions import allowed_roles
+
+
+
+
+# @method_decorator(login_required(login_url='login'), name = 'dispatch')
 
 class HomeView(View):
 
     template = 'cake/home.html'
 
     page = 'Home'
+
+    
 
     def get(self,request,*args,**kwargs):
 
@@ -93,7 +106,7 @@ class HomeView(View):
 
 #         return redirect('home')
 
-
+@method_decorator(allowed_roles(['Admin']),name ='dispatch')
 class AddCakeView(View):
 
     template = 'cake/add-cake.html'
@@ -138,10 +151,10 @@ class CakeDetailsView(View):
         data = {'cake':cake}
 
         return render(request,self.template,context=data)
-    
 
 
 
+@method_decorator(allowed_roles(['Admin']),name ='dispatch')
 class CakeEditView(View):
 
      template = 'cake/edit-cake.html'
@@ -182,7 +195,7 @@ class CakeEditView(View):
          return render(request,self.template,context=data)
       
 
-
+@method_decorator(allowed_roles(['Admin']),name ='dispatch')
 class CakeDeleteView(View):
 
     # hard delete - permanently delete the record from database
@@ -211,3 +224,81 @@ class CakeDeleteView(View):
        cake.save() 
 
        return redirect('home') 
+
+
+
+@method_decorator(allowed_roles(['User']),name ='dispatch')
+class AddToWishList(View):
+
+    def get (self,request,*args,**kwargs):
+
+        uuid = kwargs.get('uuid')
+
+        cake = Cake.objects.get(uuid=uuid)
+
+        wishlist = Wishlist.objects.get(user=request.user)
+
+        wishlist.cakes.add(cake)
+
+        return redirect('home')
+    
+
+@method_decorator(allowed_roles(['User']),name ='dispatch')    
+class RemoveFromWishList(View):
+
+     def get (self,request,*args,**kwargs):
+
+        uuid = kwargs.get('uuid')
+
+        cake = Cake.objects.get(uuid=uuid)
+
+        wishlist = Wishlist.objects.get(user=request.user)
+
+        wishlist.cakes.remove(cake)
+
+        return redirect('home')
+        
+@method_decorator(allowed_roles(['User']),name ='dispatch') 
+class WishListView(View):
+
+    template = 'cake/wishlist.html'
+
+
+    def get (self,request,*args,**kwargs):
+
+        wishlist_items = request.user.wishlist.cakes.all() 
+
+        data = {'wishlist_items':wishlist_items }
+
+        return render (request,self.template,context=data)
+    
+
+@method_decorator(allowed_roles(['User']),name ='dispatch')
+class AddToCart(View):
+
+    def get (self,request,*args,**kwargs):
+
+        uuid = kwargs.get('uuid')
+
+        cake = Cake.objects.get(uuid=uuid)
+
+        cart = Cart.objects.get(user=request.user)
+
+        cart.cakes.add(cake)
+
+        return redirect('home')
+
+@method_decorator(allowed_roles(['User']),name ='dispatch')    
+class RemoveFromCart(View):
+
+     def get (self,request,*args,**kwargs):
+
+        uuid = kwargs.get('uuid')
+
+        cake = Cake.objects.get(uuid=uuid)
+
+        Cart = Cart.objects.get(user=request.user)
+
+        Cart.cakes.remove(cake)
+
+        return redirect('home')

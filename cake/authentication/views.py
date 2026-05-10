@@ -16,6 +16,11 @@ from decouple import config
 
 import threading
 
+from app.models import Wishlist,Cart
+
+from django.db import transaction
+
+
 class LoginView(View):
 
     template = 'authentication/login.html'
@@ -91,21 +96,25 @@ class RegisterView(View):
 
         if form.is_valid():
 
-            user= form.save(commit=False)
+            with transaction.atomic():
 
-            email= form.cleaned_data.get('email')
+                user= form.save(commit=False)
 
-            user.username = email
+                email= form.cleaned_data.get('email')
 
-            user.role ='user'
+                user.username = email
 
-            password = generate_password()
+                user.role ='user'
 
-            print(password)
+                password = generate_password()
 
-            user.password = make_password(password)
+                user.password = make_password(password)
 
-            user.save()
+                user.save()
+
+                Wishlist.objects.create(user=user)
+
+                Cart.objects.create(user=user)
 
             subject = 'Cake Tales | Login Credentials'
 
@@ -117,7 +126,7 @@ class RegisterView(View):
 
             # send_email(subject,recipient,template,context)
 
-            thread = threading.Thread(send_email,args=(subject,recipient,template,context))
+            thread = threading.Thread(target=send_email,args=(subject,recipient,template,context))
 
             thread.start()
 

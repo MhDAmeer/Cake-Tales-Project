@@ -12,8 +12,8 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <h3 class="card-title text-center text-primary mb-4">🎂 Cake Details</h3>
-          
-          <h4 class="text-center fw-bold">{{ cake.name }} <span class="mx-2"><a href="{% url 'cake-edit' cake.uuid %}"><i class="fa-solid fa-pen-clip"></i></a></span><span class="mx-2"><a href="{% url 'cake-delete' cake.uuid %}"><i class="fa-solid fa-trash-can"></i></a></span></h4>
+           {% allowed_roles request "['Admin']" as allowed %}
+          <h4 class="text-center fw-bold">{{ cake.name }}  {% if allowed %}<span class="mx-2"><a href="{% url 'cake-edit' cake.uuid %}"><i class="fa-solid fa-pen-clip"></i></a></span><span class="mx-2"><a href="{% url 'cake-delete' cake.uuid %}"><i class="fa-solid fa-trash-can"></i></a></span>{% endif %}</h4>
           <p class="text-center text-muted">
            {{ cake.description }}
           </p>
