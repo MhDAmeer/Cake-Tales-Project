@@ -1,8 +1,6 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block section %}
-
-
 
 
 
@@ -12,15 +10,16 @@
       <div class="card shadow-sm">
         <div class="card-body">
           <h3 class="card-title text-center text-primary mb-4">🎂 Cake Details</h3>
-           {% allowed_roles request "['Admin']" as allowed %}
-          <h4 class="text-center fw-bold">{{ cake.name }}  {% if allowed %}<span class="mx-2"><a href="{% url 'cake-edit' cake.uuid %}"><i class="fa-solid fa-pen-clip"></i></a></span><span class="mx-2"><a href="{% url 'cake-delete' cake.uuid %}"><i class="fa-solid fa-trash-can"></i></a></span>{% endif %}</h4>
+
+          {% allowed_roles request "['Admin']" as allowed %}
+          <h4 class="text-center fw-bold">{{ cake.name }} {% if allowed %}<span class="mx-2"><a href="{% url 'cake-edit' cake.uuid %}"><i class="fa-solid fa-pen-nib"></i></a></span><span class="mx-2"><a href="{% url 'cake-delete' cake.uuid %}"><i class="fa-regular fa-trash-can"></i></a></span>{% endif %}</h4>
           <p class="text-center text-muted">
-           {{ cake.description }}
+            {{ cake.description }}
           </p>
 
           <div class="text-center mb-4">
             <img src="{{ cake.photo.url }}" 
-                 alt="{{ cake.name }}" class="rounded shadow-sm" style='width:80%; height:400px; object-fit:cover; object-fit:cover'>
+                 alt="{{ cake.name }}" class="rounded shadow-sm" style="width: 80%;height: 400px;object-fit: cover;">
           </div>
 
           <div class="row">
@@ -42,14 +41,15 @@
 
             <div class="col-md-6 mb-3">
               <strong>Egg Added:</strong>{% if cake.egg_added %}<i class="fa-solid fa-check" style="color: green;"></i>{% else %} <i class="fa-solid fa-xmark" style="color: red;"></i>{% endif %}
+
             </div>
 
             <div class="col-md-6 mb-3">
-              <strong>Availability:</strong>{% if cake.is_available %}<i class="fa-solid fa-check" style="color: green;"></i>{% else %} <i class="fa-solid fa-xmark" style="color: red;"></i>{% endif %}
+              <strong>Availability:</strong> {% if cake.is_available %}<i class="fa-solid fa-check" style="color: green;"></i>{% else %} <i class="fa-solid fa-xmark" style="color: red;"></i>{% endif %}
             </div>
 
             <div class="col-md-6 mb-3">
-              <strong>Price:</strong> ₹{{ cake.price }}
+              <strong>Price:</strong>₹ {{ cake.price }}
             </div>
           </div>
 
@@ -61,8 +61,6 @@
     </div>
   </div>
 </section>
-
-
 
 
 

@@ -8,6 +8,8 @@ from django.template.loader import render_to_string
 
 from decouple import config
 
+from app.models import Order
+
 
 
 def generate_password():
@@ -28,3 +30,22 @@ def send_email(subject,recipient,template,context):
     email_obj.attach_alternative(content,mimetype='text/html')
 
     email_obj.send()
+
+
+
+def generate_order_id():
+    
+    while True:
+
+        order_id = 'KT-'+''.join(random.choices(string.digits,k=7))
+
+        if not Order.objects.filter(order_id=order_id).exists():
+
+            return order_id
+
+
+def generate_otp():
+
+    otp = ''.join(random.choices(string.digits,k=4))
+
+    return otp

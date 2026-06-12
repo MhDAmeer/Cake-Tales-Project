@@ -1,8 +1,10 @@
 from django.db import models
 
 import uuid
-# Create your models here.
 
+from django.db.models import Sum
+
+# Create your models here.
 
 class BaseClass(models.Model):
 
@@ -12,16 +14,11 @@ class BaseClass(models.Model):
 
     created_at = models.DateTimeField(auto_now=True)
 
-    update_at = models.DateTimeField(auto_now_add=True)
-
-
-
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
 
         abstract = True
-
-
 
 # class CategoryChoices(models.TextChoices):
 
@@ -39,14 +36,12 @@ class Category(BaseClass):
 
     class Meta:
 
-        verbose_name = 'Category'
+        verbose_name = 'Categories'
 
         verbose_name_plural = 'Categories'
 
-    def __str__ (self):
-        
+    def __str__(self):
         return self.name
-           
 
 # class FlavourChoices(models.TextChoices):
 
@@ -64,14 +59,12 @@ class Flavour(BaseClass):
 
     class Meta:
 
-        verbose_name = 'Flavour'
+        verbose_name = 'Flavours'
 
         verbose_name_plural = 'Flavours'
 
-    def __str__ (self):
-        
+    def __str__(self):
         return self.name
-    
 
 # class WeightChoices(models.TextChoices):
 
@@ -87,15 +80,12 @@ class Weight(BaseClass):
 
     class Meta:
 
-        verbose_name = 'Weight'
+        verbose_name = 'Weights'
 
         verbose_name_plural = 'Weights'
 
-    def __str__ (self):
-        
+    def __str__(self):
         return self.name
-    
-
 
 # class ShapeChoices(models.TextChoices):
 
@@ -111,14 +101,12 @@ class Shape(BaseClass):
 
     class Meta:
 
-        verbose_name = 'Shape'
+        verbose_name = 'Shapes'
 
         verbose_name_plural = 'Shapes'
 
-    def __str__ (self):
-        
+    def __str__(self):
         return self.name
-
 
 
 class Cake(BaseClass):
@@ -143,51 +131,105 @@ class Cake(BaseClass):
 
     price = models.FloatField()
 
+    class Meta :
 
-    class Meta:
+        verbose_name = 'cakes'
 
-        verbose_name = 'Cake'
-
-        verbose_name_plural = 'Cakes' 
-
+        verbose_name_plural = 'Cakes'
 
     def __str__(self):
+        return self.name
 
-        return self.name     
-    
 
 class Wishlist(BaseClass):
 
     user = models.OneToOneField('authentication.Profile',on_delete=models.CASCADE)
 
-    cakes = models.ManyToManyField('cake',null=True)    
+    cakes = models.ManyToManyField('Cake',blank=True)
 
-    
     class Meta:
 
         verbose_name = 'Wishlists'
 
-        verbose_name_plural = 'Wishlists' 
-
+        verbose_name_plural = 'Wishlists'
 
     def __str__(self):
-
-        return f'{self.user.username} Wishlist' 
+        return f'{self.user.username} Wishlist'
     
 class Cart(BaseClass):
 
     user = models.OneToOneField('authentication.Profile',on_delete=models.CASCADE)
 
-    cakes = models.ManyToManyField('cake',blank=True)    
-
+    cakes = models.ManyToManyField('Cake',blank=True)
     
+    @property
+    def get_total(self):
+
+        total = self.cakes.aggregate(total=Sum('price')).get('total')
+
+        return total if total else 0
+
     class Meta:
 
         verbose_name = 'Carts'
 
-        verbose_name_plural = 'Carts' 
-
+        verbose_name_plural = 'Carts'
 
     def __str__(self):
 
-        return f'{self.user.username} Cart' 
+        return f'{self.user.username} Cart'
+    
+class PaymentOptionChoices(models.TextChoices):
+
+    COD = 'COD','COD'
+
+    ONLINE = 'Online','Online'
+
+class DeliveryAddress(BaseClass):
+
+    user = models.ForeignKey('authentication.Profile',on_delete=models.CASCADE)
+
+    house_num_or_building_name = models.CharField(max_length=20)
+
+    landmark = models.CharField(max_length=20)
+
+    place = models.CharField(max_length=20)
+
+    pincode = models.CharField(max_length=6)
+
+    class Meta:
+
+        verbose_name = 'Delivery Address'
+
+        verbose_name_plural = 'Delivery Address'
+
+    def __str__(self):
+
+        return f'{self.user.username} Delivery Address'
+
+class Order(BaseClass):
+
+    user = models.ForeignKey('authentication.Profile',on_delete=models.CASCADE)
+
+    order_id = models.CharField(max_length=10)
+
+    cakes = models.ManyToManyField('Cake')
+
+    total_price = models.FloatField()
+
+    payment_option = models.CharField(max_length=10,choices=PaymentOptionChoices.choices,null=True,blank=True)
+
+    delivery_address = models.ForeignKey('DeliveryAddress',on_delete=models.SET_NULL,null=True,blank=True)
+
+    order_placed = models.BooleanField(default=False)
+
+    class Meta:
+
+        verbose_name = 'Orders'
+
+        verbose_name_plural = 'Orders'
+
+    def __str__(self):
+
+        return f'{self.user.username} {self.order_id}'
+

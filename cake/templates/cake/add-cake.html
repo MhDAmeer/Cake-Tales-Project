@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block section %}
 
@@ -10,130 +10,127 @@
           <h3 class="card-title text-center text-primary mb-4">🎂 Add a New Cake</h3>
           <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
+            
             <div class="mb-3">
               <label class="form-label">Cake Name</label>
               <!-- <input type="text" name="name" class="form-control" required> -->
                {{ form.name }}
                {% if form.name.errors %}
-              <p class="small" style="color: red;">{{ form.name.errors.0 }}</p>
-              {% endif %}
+               <p class="small " style="color: red;">{{ form.name.errors.0 }}</p>
+               {% endif %}
             </div>
 
             <div class="mb-3">
               <label class="form-label">Description</label>
               <!-- <textarea name="description" rows="3" class="form-control" required></textarea> -->
-
-              {{ form.description }}
-             {% if form.description.errors %}
-              <p class="small" style="color: red;">{{ form.description.errors.0 }}</p>
-              {% endif %}
-               
+               {{ form.description }}
+               {% if form.description.errors %}
+               <p class="small " style="color: red;">{{ form.description.errors.0 }}</p>
+               {% endif %}
             </div>
 
             <div class="mb-3">
               <label class="form-label">Photo</label>
               <!-- <input type="file" name="photo" class="form-control" required> -->
-              {{ form.photo }}
-              {% if form.photo.errors %}
-              <p class="small" style="color: red;">{{ form.photo.errors.0 }}</p>
-              {% endif %}
+               {{ form.photo }}
+
+               {% if form.photo.errors %}
+               <p class="small " style="color: red;">{{ form.photo.errors.0 }}</p>
+               {% endif %}
+
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">Category</label>
                 <!-- <select name="category" class="form-select" required>
-                  <option value="Birthday cakes">Birthday Cakes</option>
-                  <option value="Wedding cakes">Wedding Cakes</option>
-                  <option value="Plum cakes">Plum Cakes</option>
+                  <option value="Birthday Cakes">Birthday Cakes</option>
+                  <option value="Wedding Cakes">Wedding Cakes</option>
+                  <option value="Plum Cakes">Plum cakes</option>
                   <option value="Muffins">Muffins</option>
                 </select> -->
                 {{ form.category }}
+
                 {% if form.category.errors %}
-              <p class="small" style="color: red;">{{ form.category.errors.0 }}</p>
-              {% endif %}
+               <p class="small " style="color: red;">{{ form.category.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Flavour</label>
                 <!-- <select name="flavour" class="form-select" required>
-                  <option value="Vanilla">vanilla</option>
+                  <option value="vanilla">vanilla</option>
                   <option value="Black Forest">Black Forest</option>
                 </select> -->
                 {{ form.flavour }}
 
-                 {% if form.flavour.errors %}
-              <p class="small" style="color: red;">{{ form.flavour.errors.0 }}</p>
-              {% endif %}
+                {% if form.flavour.errors %}
+               <p class="small " style="color: red;">{{ form.flavour.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Shape</label>
                 <!-- <select name="shape" class="form-select" required>
-                  <option value="round">Round</option>
-                  <option value="square">Square</option>
-                  <option value="heart">Heart</option>
-                  <option value="rectangle">Rectangle</option>
+                  <option value="Circle">Circle</option>
+                  <option value="Square">Square</option>
+                  <option value="Heart">Heart</option>
+                  <option value="Rectangle">Rectangle</option>
                 </select> -->
                 {{ form.shape }}
-                  {% if form.shape.errors %}
-              <p class="small" style="color: red;">{{ form.shape.errors.0 }}</p>
-              {% endif %}
+                {% if form.shape.errors %}
+               <p class="small " style="color: red;">{{ form.shape.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Weight</label>
                 <!-- <select name="weight" class="form-select" required>
-                  <option value="1 kg">1 Kg</option>
-                  <option value="2 kg">2 Kg</option>
-                  <option value="5 kg">5 Kg</option>
+                  <option value="1kg">1 Kg</option>
+                  <option value="2kg">2 Kg</option>
+                  <option value="5kg">5 Kg</option>
                 </select> -->
-                {{ form.weight }} 
+                {{ form.weight }}
                 {% if form.weight.errors %}
-              <p class="small" style="color: red;">{{ form.weight.errors.0 }}</p>
-              {% endif %}
+               <p class="small " style="color: red;">{{ form.weight.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Egg Added</label><br>
-                 
                 {% for radio in form.egg_added %}
-
-
                 <div class="form-check form-check-inline">
                   <!-- <input class="form-check-input border border-3" type="radio" name="egg_added" value="True" required> -->
-                
-                  {{ radio.tag }}
-
+                   {{ radio.tag }}
                   <label class="form-check-label">{{ radio.choice_label }}</label>
                 </div>
                 {% endfor %}
-                {% if form.edd_added.errors %}
-              <p class="small" style="color: red;">{{ form.edd_added.errors.0 }}</p>
-              {% endif %}
+                {% if form.egg_added.errors %}
+               <p class="small " style="color: red;">{{ form.egg_added.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Availability</label><br>
                 {% for radio in form.is_available %}
                 <div class="form-check form-check-inline">
-                  {{ radio.tag }}
+                  <!-- <input class="form-check-input border border-3" type="radio" name="is_available" value="True" required> -->
+                   {{ radio.tag }}
                   <label class="form-check-label">{{ radio.choice_label }}</label>
                 </div>
-                {% endfor %}  
-                  {% if form.availability.errors %}
-              <p class="small" style="color: red;">{{ form.availability.errors.0 }}</p>
-              {% endif %}
-                <div class="form-check form-check-inline">
-                  <!-- <input class="form-check-input border border-3" type="radio" name="is_available" value="False" required>
-                  <label class="form-check-label">Not Available</label> -->
-                </div>
+                {% endfor %}
+                {% if form.is_availability.errors %}
+               <p class="small " style="color: red;">{{ form.is_availability.errors.0 }}</p>
+               {% endif %}
               </div>
 
               <div class="col-md-6 mb-3">
                 <label class="form-label">Price</label>
                 <!-- <input type="number" name="price" class="form-control" placeholder="Enter price in ₹" required> -->
-                {{ form.price }}
+                 {{ form.price }}
+                 {% if form.price.errors %}
+               <p class="small " style="color: red;">{{ form.price.errors.0 }}</p>
+               {% endif %}
               </div>
             </div>
 
@@ -148,8 +145,5 @@
 </section>
 
 
-
-
-
-
 {% endblock %}
+

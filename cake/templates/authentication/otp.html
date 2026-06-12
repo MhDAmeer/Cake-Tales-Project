@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block section %}
+
+<section class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title text-center text-primary mb-4">🎂 OTP</h3>
+          <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+              <label class="form-label">OTP</label>
+              <!-- <input type="text" name="name" class="form-control" required> -->
+               {{ form.otp }}
+               {% if form.otp.errors %}
+               <p class="small " style="color: red;">{{ form.otp.errors.0 }}</p>
+               {% endif %}
+            </div>
+
+
+            <div class="text-center mt-4">
+          {% if msg %}
+
+          <p style="text-align: center; color: red;" class="small">{{ msg }}</p>
+
+          {% endif %}
+              <button type="submit" class="btn btn-primary px-4">Verify</button>
+              <p id="timer" class="text-center"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+    let timeLeft = parseInt('{{ remaining_time|default:0 }}');
+    let timerElement = document.getElementById('timer');
+
+    function updateTimer() {
+        if (timeLeft <= 0) {
+            timerElement.innerHTML = `
+            <a class="btn btn-primary my-3" href=''>Resend OTP</a>
+                `;
+        } else {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerElement.innerText = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeLeft--;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+
+    updateTimer();
+</script>
+
+
+{% endblock %}
+

@@ -24,7 +24,7 @@
               <label class="form-label">Password</label>
               <!-- <textarea name="description" rows="3" class="form-control" required></textarea> -->
                {{ form.password }}
-               {% if form.description.errors %}
+               {% if form.password.errors %}
                <p class="small " style="color: red;">{{ form.password.errors.0 }}</p>
                {% endif %}
             </div>
@@ -37,6 +37,8 @@
 
           {% endif %}
               <button type="submit" class="btn btn-primary px-4">Login</button>
+
+              <a href="{% url 'forgot-password' %}" class="text-center d-block">Forgot Password?</a>
             </div>
           </form>
         </div>
@@ -47,3 +49,4 @@
 
 
 {% endblock %}
+

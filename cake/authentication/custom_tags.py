@@ -1,14 +1,11 @@
-from django.template import Library 
+from django.template import Library
 
 register = Library()
-
 
 @register.simple_tag
 def get_square(num):
 
-    return num **2
-
-
+    return num**2
 
 @register.simple_tag
 def allowed_roles(request,roles):
